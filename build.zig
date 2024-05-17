@@ -1,33 +1,30 @@
 const std = @import("std");
 
-pub fn build(b: *std.build.Builder) void {
+pub fn build(b: *std.Build) void {
     const lib = b.addStaticLibrary(.{
         .name = "z",
         .target = b.standardTargetOptions(.{}),
         .optimize = b.standardOptimizeOption(.{}),
     });
     lib.linkLibC();
-    lib.addCSourceFiles(.{
-        .files = &.{
-            "adler32.c",
-            "crc32.c",
-            "deflate.c",
-            "infback.c",
-            "inffast.c",
-            "inflate.c",
-            "inftrees.c",
-            "trees.c",
-            "zutil.c",
-            "compress.c",
-            "uncompr.c",
-            "gzclose.c",
-            "gzlib.c",
-            "gzread.c",
-            "gzwrite.c",
-        },
-        .flags = &.{"-std=c89"},
-    });
-    lib.installHeader("zconf.h", "zconf.h");
-    lib.installHeader("zlib.h", "zlib.h");
+    lib.addCSourceFiles(.{ .files = &.{
+        "adler32.c",
+        "crc32.c",
+        "deflate.c",
+        "infback.c",
+        "inffast.c",
+        "inflate.c",
+        "inftrees.c",
+        "trees.c",
+        "zutil.c",
+        "compress.c",
+        "uncompr.c",
+        "gzclose.c",
+        "gzlib.c",
+        "gzread.c",
+        "gzwrite.c",
+    }, .flags = &.{"-std=c89"} });
+    lib.installHeader(b.path("zconf.h"), "zconf.h");
+    lib.installHeader(b.path("zlib.h"), "zlib.h");
     b.installArtifact(lib);
 }
